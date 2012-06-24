@@ -24,13 +24,7 @@ public final class ExecutionExplorer {
 		for (Class<?> interfaceClass : clazz.getInterfaces()) {
 			Method method = findExecutionMethod(interfaceClass);
 			if (method != null) {
-				try {
-					return clazz.getMethod(method.getName(), method.getParameterTypes());
-				} catch (SecurityException e) {
-					//TODO log this
-				} catch (NoSuchMethodException e) {
-					//TODO log this
-				}
+				return method;
 			}
 		}
 		return null;
