@@ -12,6 +12,6 @@ public interface StringConcatination {
 	 * @param b - second string
 	 * @return a + b
 	 */
-	@Execute(parameters = {@Parameter("a"), @Parameter("b") }, iterations = {1, Execute.HUNDRED, Execute.TEN_THOUSAND, Execute.MILLION, Execute.HUNDRED * Execute.MILLION})
+	@Execute(parameters = {@Parameter("a"), @Parameter("b") }, iterations = {1, Execute.HUNDRED, Execute.TEN_THOUSAND, Execute.MILLION })
 	String concat(String a, String b);
 }
