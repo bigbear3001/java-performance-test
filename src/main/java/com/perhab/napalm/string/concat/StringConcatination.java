@@ -6,6 +6,12 @@ import com.perhab.napalm.statement.Parameter;
 
 public interface StringConcatination {
 
-	@Execute(parameters = {@Parameter("a"), @Parameter("b")})
-	public String concat(String a, String b);
+	/**
+	 * put the strings a and b together.
+	 * @param a - first string
+	 * @param b - second string
+	 * @return a + b
+	 */
+	@Execute(parameters = {@Parameter("a"), @Parameter("b") }, iterations = {1, Execute.HUNDRED, Execute.TEN_THOUSAND, Execute.MILLION, Execute.HUNDRED * Execute.MILLION})
+	String concat(String a, String b);
 }

@@ -1,6 +1,7 @@
 package com.perhab.napalm;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import com.perhab.napalm.statement.BaseStatement;
 
@@ -9,25 +10,22 @@ public class Result {
 	@Getter
 	private BaseStatement statement;
 	
+	@Setter
 	private Object result;
 	
-	private long start;
+	@Getter
+	private long[] times;
 	
-	private long end;
+	private int timesSet = 0;
 	
 	public Result(BaseStatement statement) {
 		this.statement = statement;
-		start = System.currentTimeMillis();
+		times = new long[statement.getExpectedTimes()];
+		time();
 	}
 
-	public Result setResult(Object value) {
-		this.result = value;
-		return this;
-	}
-
-	public Result stop() {
-		end = System.currentTimeMillis();
-		return this;
+	public void stop() {
+		//time();
 	}
 
 	@Override
@@ -39,12 +37,16 @@ public class Result {
 	}
 
 	public long getTime() {
-		return end - start;
+		return times[timesSet - 1] - times[0];
 	}
 	
 	@Override
 	public final String toString() {
 		return statement.toString() + "(" + statement.getArguments() + ")";
+	}
+
+	public void time() {
+		times[timesSet++] = System.currentTimeMillis();
 	}
 
 }

@@ -48,6 +48,15 @@ public final class ExecutionExplorer {
 		return values;
 	}
 
+	/**
+	 * @param method - method to inspect for the {@link Execute} annotation where the iterations are set.
+	 * @return iterations set for method
+	 */
+	public static int[] getIterations(final Method method) {
+		Execute execution = method.getAnnotation(Execute.class);
+		return execution.iterations();
+	}
+
 	private static Object convertToArray(Class<?> clazz, Parameter[] parameters) {
 		Integer[] integers = new Integer[parameters.length];
 		for (int i = 0; i < parameters.length; i++) {
@@ -62,4 +71,5 @@ public final class ExecutionExplorer {
 		}
 		throw new StatementNotInitalizableException("Cannot convert " + parameter + "(" + parameter.getClass() + ") to " + clazz);
 	}
+
 }

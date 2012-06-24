@@ -21,6 +21,8 @@ public class BaseStatement implements Statement {
 	@Getter
 	private Object[] arguments;
 	
+	private int[] iterations;
+	
 	public BaseStatement(Class<?> implementation) {
 		try {
 			implementationObject = implementation.getConstructor(new Class[0]).newInstance(new Object[]{});
@@ -42,6 +44,7 @@ public class BaseStatement implements Statement {
 			throw new StatementNotInitalizableException("Cannot find a method annotaed with @Execution in this class " + implementation);
 		}
 		arguments = ExecutionExplorer.getArguments(method);
+		iterations = ExecutionExplorer.getIterations(method);
 		group = StatementGroup.getStatementGroup(this);
 	}
 
@@ -51,11 +54,16 @@ public class BaseStatement implements Statement {
 	public Result execute() {
 		Result result = new Result(this);
 		try {
-		result.setResult(method.invoke(implementationObject, arguments));
-		for (int i = 0; i < 10000000; i++) {
-			method.invoke(implementationObject, arguments);
-		}
-		return result.stop();
+			result.setResult(method.invoke(implementationObject, arguments));
+			int j = 1;
+			for (int i = 0; i < iterations.length; i++) {
+				for (; j < iterations[i]; j++) {
+					method.invoke(implementationObject, arguments);
+				}
+				result.time();
+			}
+			result.stop();
+			return result;
 		} catch (InvocationTargetException e) {
 			throw new InvocationError("Cannot invode method " + method + " on implementation " + implementationObject + " with args " + arguments, e);
 		} catch (IllegalArgumentException e) {
@@ -68,5 +76,9 @@ public class BaseStatement implements Statement {
 	@Override
 	public final String toString() {
 		return implementationObject.getClass().getName();
+	}
+
+	public int getExpectedTimes() {
+		return iterations.length + 1;
 	}
 }
