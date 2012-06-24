@@ -1,9 +1,12 @@
 package com.perhab.napalm;
 
+import lombok.Getter;
+
 import com.perhab.napalm.statement.Statement;
 
 public class Result {
 
+	@Getter
 	private Statement statement;
 	
 	private Object result;
@@ -35,12 +38,13 @@ public class Result {
 		return super.equals(obj);
 	}
 
-	public Statement getStatmenet() {
-		return statement;
-	}
-
 	public long getTime() {
 		return end - start;
+	}
+	
+	@Override
+	public final String toString() {
+		return statement.toString() + "(" + statement.getArguments() + ")";
 	}
 
 }

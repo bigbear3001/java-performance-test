@@ -3,6 +3,8 @@ package com.perhab.napalm.statement;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import lombok.Getter;
+
 import com.perhab.napalm.Result;
 import com.perhab.napalm.string.concat.StringConcatination;
 
@@ -12,6 +14,7 @@ public class Statement {
 	
 	private Method method;
 	
+	@Getter
 	private Object[] arguments;
 	
 	public Statement(Class<?> implementation) {
@@ -34,7 +37,7 @@ public class Statement {
 		if (method == null) {
 			throw new StatementNotInitalizableException("Cannot find a method annotaed with @Execution in this class " + implementation);
 		}
-		arguments = new String[]{"a", "b"};
+		arguments = ExecutionExplorer.getArguments(method);
 	}
 
 	public Result execute() {

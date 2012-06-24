@@ -29,4 +29,37 @@ public final class ExecutionExplorer {
 		}
 		return null;
 	}
+
+	public static Object[] getArguments(Method method) {
+		Execute execution = method.getAnnotation(Execute.class);
+		Parameter[] parameters = execution.parameters();
+		Class<?>[] parameterTypes = method.getParameterTypes();
+		Object[] values = new Object[parameterTypes.length];
+		for (int i = 0; i < parameterTypes.length; i++) {
+			Object parameter = parameters[i].value();
+			if (parameterTypes[i].isAssignableFrom(parameter.getClass())) {
+				values[i] = parameter;
+			} else if (parameterTypes[i].isArray()) {
+				values[i] = convertToArray(parameterTypes[i], parameters);
+			} else {
+				values[i] = convertTo(parameterTypes[i], parameter);
+			}
+		}
+		return values;
+	}
+
+	private static Object convertToArray(Class<?> clazz, Parameter[] parameters) {
+		Integer[] integers = new Integer[parameters.length];
+		for (int i = 0; i < parameters.length; i++) {
+			integers[i] = (Integer) convertTo(Integer.class, parameters[i].value());
+		}
+		return integers;
+	}
+
+	private static Object convertTo(Class<?> clazz, Object parameter) {
+		if (parameter instanceof String && clazz.equals(Integer.class)) {
+			return Integer.parseInt((String) parameter);
+		}
+		throw new StatementNotInitalizableException("Cannot convert " + parameter + "(" + parameter.getClass() + ") to " + clazz);
+	}
 }

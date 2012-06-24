@@ -5,6 +5,9 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
+import com.perhab.napalm.arrays.iterate.ForWithI;
+import com.perhab.napalm.arrays.iterate.ShortFor;
+import com.perhab.napalm.statement.Execute;
 import com.perhab.napalm.statement.Statement;
 import com.perhab.napalm.string.concat.StringBufferImplementation;
 import com.perhab.napalm.string.concat.StringBufferImplementation2;
@@ -50,6 +53,9 @@ public class Runner {
 		
 	}
 
+	/**
+	 * @return all classes discovered that have a method that is annotated with {@link Execute}.
+	 */
 	private static Class<?>[] discover() {
 		return new Class<?>[]{
 				StringBufferImplementation.class,
@@ -57,11 +63,18 @@ public class Runner {
 				StringImplementation.class,
 				StringBufferImplementation2.class,
 				StringImplementation2.class,
-				StringBuilderImplementation2.class
+				StringBuilderImplementation2.class,
+				ForWithI.class,
+				ShortFor.class
 				};
 	}
 	
-	public Collection<Result> run(Class<?>[] implementations) {
+	/**
+	 * Run the performance tests with given implementations.
+	 * @param implementations - classes that contain a method annotated with {@link Execute}
+	 * @return collection with the performance test results of the given implementations
+	 */
+	public final Collection<Result> run(final Class<?>[] implementations) {
 		Collection<Statement> statements = prepare(implementations);
 		Collection<Result> results = new ArrayList<Result>();
 		for (Statement statement : statements) {
@@ -71,7 +84,12 @@ public class Runner {
 		return results;
 	}
 
-	private Collection<Statement> prepare(Class<?>[] implementations) {
+	/**
+	 * Prepare the given implementations for running as a performance test.
+	 * @param implementations - array with classes that have a method annotated with {@link Execution}
+	 * @return prepared implementations (Statements)
+	 */
+	private Collection<Statement> prepare(final Class<?>[] implementations) {
 		ArrayList<Statement> statments = new ArrayList<Statement>(implementations.length);
 		for (Class<?> implementation : implementations) {
 			statments.add(new Statement(implementation));
