@@ -1,4 +1,6 @@
-package com.perhab.napalm;
+package com.perhab.napalm.validation;
+
+import com.perhab.napalm.Result;
 
 public class ResultsNotEqualException extends RuntimeException {
 

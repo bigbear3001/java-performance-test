@@ -13,7 +13,7 @@ public class Statement {
 	public Result execute() {
 		Result result = new Result(this);
 		result.setResult(implementation.concat("a", "b"));
-		for(int i = 0 ; i < 1000000; i++) {
+		for(int i = 0 ; i < 10000000; i++) {
 			implementation.concat("a", "b");
 		}
 		return result.stop();
