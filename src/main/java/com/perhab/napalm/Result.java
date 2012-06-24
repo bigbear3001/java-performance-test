@@ -2,12 +2,12 @@ package com.perhab.napalm;
 
 import lombok.Getter;
 
-import com.perhab.napalm.statement.Statement;
+import com.perhab.napalm.statement.BaseStatement;
 
 public class Result {
 
 	@Getter
-	private Statement statement;
+	private BaseStatement statement;
 	
 	private Object result;
 	
@@ -15,7 +15,7 @@ public class Result {
 	
 	private long end;
 	
-	public Result(Statement statement) {
+	public Result(BaseStatement statement) {
 		this.statement = statement;
 		start = System.currentTimeMillis();
 	}

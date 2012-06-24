@@ -2,18 +2,16 @@ package com.perhab.napalm;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.Vector;
 
 import com.perhab.napalm.arrays.iterate.ForWithI;
 import com.perhab.napalm.arrays.iterate.ShortFor;
 import com.perhab.napalm.statement.Execute;
+import com.perhab.napalm.statement.BaseStatement;
 import com.perhab.napalm.statement.Statement;
 import com.perhab.napalm.string.concat.StringBufferImplementation;
 import com.perhab.napalm.string.concat.StringBufferImplementation2;
 import com.perhab.napalm.string.concat.StringBuilderImplementation;
 import com.perhab.napalm.string.concat.StringBuilderImplementation2;
-import com.perhab.napalm.string.concat.StringConcatination;
 import com.perhab.napalm.string.concat.StringImplementation;
 import com.perhab.napalm.string.concat.StringImplementation2;
 import com.perhab.napalm.validation.ResultEqualsValidator;
@@ -75,12 +73,11 @@ public class Runner {
 	 * @return collection with the performance test results of the given implementations
 	 */
 	public final Collection<Result> run(final Class<?>[] implementations) {
-		Collection<Statement> statements = prepare(implementations);
+		Collection<StatementGroup> groups = prepare(implementations);
 		Collection<Result> results = new ArrayList<Result>();
-		for (Statement statement : statements) {
-			results.add(statement.execute());
+		for (StatementGroup group : groups) {
+			results.addAll(group.execute(validators));
 		}
-		validators.validate(results);
 		return results;
 	}
 
@@ -89,11 +86,14 @@ public class Runner {
 	 * @param implementations - array with classes that have a method annotated with {@link Execution}
 	 * @return prepared implementations (Statements)
 	 */
-	private Collection<Statement> prepare(final Class<?>[] implementations) {
-		ArrayList<Statement> statments = new ArrayList<Statement>(implementations.length);
+	private Collection<StatementGroup> prepare(final Class<?>[] implementations) {
+		ArrayList<StatementGroup> statementGroups = new ArrayList<StatementGroup>(implementations.length);
 		for (Class<?> implementation : implementations) {
-			statments.add(new Statement(implementation));
+			BaseStatement statement = new BaseStatement(implementation);
+			if (!statementGroups.contains(statement.getGroup())) {
+				statementGroups.add(statement.getGroup());
+			}
 		}
-		return statments;
+		return statementGroups;
 	}
 }
