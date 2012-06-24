@@ -1,5 +1,7 @@
 package com.perhab.napalm;
 
+import com.perhab.napalm.statement.Statement;
+
 public class Result {
 
 	private Statement statement;

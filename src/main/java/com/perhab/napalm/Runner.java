@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
+import com.perhab.napalm.statement.Statement;
 import com.perhab.napalm.string.concat.StringBufferImplementation;
 import com.perhab.napalm.string.concat.StringBufferImplementation2;
 import com.perhab.napalm.string.concat.StringBuilderImplementation;
@@ -44,19 +45,23 @@ public class Runner {
 	 */
 	public static void main(final String[] args) {
 		Runner runner = new Runner();
-		Collection<Result> results = runner.run(new StringConcatination[]{
-				new StringBufferImplementation(),
-				new StringBuilderImplementation(),
-				new StringImplementation(),
-				new StringBufferImplementation2(),
-				new StringImplementation2(),
-				new StringBuilderImplementation2()
-				});
+		Collection<Result> results = runner.run(discover());
 		new SystemOutPrinter().print(results);
 		
 	}
+
+	private static Class<?>[] discover() {
+		return new Class<?>[]{
+				StringBufferImplementation.class,
+				StringBuilderImplementation.class,
+				StringImplementation.class,
+				StringBufferImplementation2.class,
+				StringImplementation2.class,
+				StringBuilderImplementation2.class
+				};
+	}
 	
-	public Collection<Result> run(StringConcatination[] implementations) {
+	public Collection<Result> run(Class<?>[] implementations) {
 		Collection<Statement> statements = prepare(implementations);
 		Collection<Result> results = new ArrayList<Result>();
 		for (Statement statement : statements) {
@@ -66,9 +71,9 @@ public class Runner {
 		return results;
 	}
 
-	private Collection<Statement> prepare(StringConcatination[] implementations) {
+	private Collection<Statement> prepare(Class<?>[] implementations) {
 		ArrayList<Statement> statments = new ArrayList<Statement>(implementations.length);
-		for (StringConcatination implementation : implementations) {
+		for (Class<?> implementation : implementations) {
 			statments.add(new Statement(implementation));
 		}
 		return statments;
