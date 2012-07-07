@@ -1,4 +1,4 @@
-package com.perhab.napalm.arrays.iterate;
+package com.perhab.napalm.implementations.arrays.iterate;
 
 import com.perhab.napalm.statement.Execute;
 import com.perhab.napalm.statement.Parameter;

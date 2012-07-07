@@ -1,4 +1,4 @@
-package com.perhab.napalm.string.concat;
+package com.perhab.napalm.implementations.string.concat;
 
 import com.perhab.napalm.statement.Execute;
 import com.perhab.napalm.statement.Parameter;

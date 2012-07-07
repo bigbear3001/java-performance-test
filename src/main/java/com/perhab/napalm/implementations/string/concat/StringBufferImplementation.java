@@ -1,4 +1,4 @@
-package com.perhab.napalm.string.concat;
+package com.perhab.napalm.implementations.string.concat;
 
 public class StringBufferImplementation implements StringConcatination {
 	public String concat(String a, String b) {

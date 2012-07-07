@@ -1,4 +1,4 @@
-package com.perhab.napalm.arrays.iterate;
+package com.perhab.napalm.implementations.arrays.iterate;
 
 public class ForWithI implements ArrayIteration {
 
