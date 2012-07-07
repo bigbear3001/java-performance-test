@@ -5,6 +5,9 @@ import java.util.Collection;
 
 import com.perhab.napalm.implementations.arrays.iterate.ForWithI;
 import com.perhab.napalm.implementations.arrays.iterate.ShortFor;
+import com.perhab.napalm.implementations.generics.methods.LazyReflectionMethodCall;
+import com.perhab.napalm.implementations.generics.methods.NormalMethodCall;
+import com.perhab.napalm.implementations.generics.methods.ReflectionMethodCall;
 import com.perhab.napalm.implementations.string.concat.StringBufferImplementation;
 import com.perhab.napalm.implementations.string.concat.StringBufferImplementation2;
 import com.perhab.napalm.implementations.string.concat.StringBuilderImplementation;
@@ -63,8 +66,11 @@ public class Runner {
 				StringImplementation2.class,
 				StringBuilderImplementation2.class,
 				ForWithI.class,
-				ShortFor.class
-				};
+				ShortFor.class,
+				NormalMethodCall.class,
+				ReflectionMethodCall.class,
+				LazyReflectionMethodCall.class
+			};
 	}
 	
 	/**
