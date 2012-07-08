@@ -3,24 +3,9 @@ package com.perhab.napalm;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.perhab.napalm.implementations.arrays.iterate.ForWithI;
-import com.perhab.napalm.implementations.arrays.iterate.ShortFor;
-import com.perhab.napalm.implementations.generics.methods.InterfaceMethodCall;
-import com.perhab.napalm.implementations.generics.methods.LazyReflectionMethodCall;
-import com.perhab.napalm.implementations.generics.methods.NormalMethodCall;
-import com.perhab.napalm.implementations.generics.methods.ReflectionMethodCall;
-import com.perhab.napalm.implementations.generics.methods.ReflectionMethodCallWithExceptions;
-import com.perhab.napalm.implementations.string.concat.StringBufferImplementation;
-import com.perhab.napalm.implementations.string.concat.StringBufferImplementation2;
-import com.perhab.napalm.implementations.string.concat.StringBuilderImplementation;
-import com.perhab.napalm.implementations.string.concat.StringBuilderImplementation2;
-import com.perhab.napalm.implementations.string.concat.StringImplementation;
-import com.perhab.napalm.implementations.string.concat.StringImplementation2;
-import com.perhab.napalm.implementations.string.replace.CharReplace;
-import com.perhab.napalm.implementations.string.replace.RegexReplace;
-import com.perhab.napalm.statement.Execute;
+import com.perhab.napalm.discover.Discover;
 import com.perhab.napalm.statement.BaseStatement;
-import com.perhab.napalm.statement.Statement;
+import com.perhab.napalm.statement.Execute;
 import com.perhab.napalm.validation.ResultEqualsValidator;
 import com.perhab.napalm.validation.Validator;
 import com.perhab.napalm.validation.Validators;
@@ -62,23 +47,7 @@ public class Runner {
 	 * @return all classes discovered that have a method that is annotated with {@link Execute}.
 	 */
 	private static Class<?>[] discover() {
-		return new Class<?>[]{
-				StringBufferImplementation.class,
-				StringBuilderImplementation.class,
-				StringImplementation.class,
-				StringBufferImplementation2.class,
-				StringImplementation2.class,
-				StringBuilderImplementation2.class,
-				ForWithI.class,
-				ShortFor.class,
-				NormalMethodCall.class,
-				ReflectionMethodCall.class,
-				ReflectionMethodCallWithExceptions.class,
-				LazyReflectionMethodCall.class,
-				InterfaceMethodCall.class,
-				CharReplace.class,
-				RegexReplace.class
-			};
+		return Discover.findClassesWithMethodsAnnotatedWith(Execute.class);
 	}
 	
 	/**
