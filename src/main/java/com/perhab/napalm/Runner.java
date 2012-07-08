@@ -5,15 +5,19 @@ import java.util.Collection;
 
 import com.perhab.napalm.implementations.arrays.iterate.ForWithI;
 import com.perhab.napalm.implementations.arrays.iterate.ShortFor;
+import com.perhab.napalm.implementations.generics.methods.InterfaceMethodCall;
 import com.perhab.napalm.implementations.generics.methods.LazyReflectionMethodCall;
 import com.perhab.napalm.implementations.generics.methods.NormalMethodCall;
 import com.perhab.napalm.implementations.generics.methods.ReflectionMethodCall;
+import com.perhab.napalm.implementations.generics.methods.ReflectionMethodCallWithExceptions;
 import com.perhab.napalm.implementations.string.concat.StringBufferImplementation;
 import com.perhab.napalm.implementations.string.concat.StringBufferImplementation2;
 import com.perhab.napalm.implementations.string.concat.StringBuilderImplementation;
 import com.perhab.napalm.implementations.string.concat.StringBuilderImplementation2;
 import com.perhab.napalm.implementations.string.concat.StringImplementation;
 import com.perhab.napalm.implementations.string.concat.StringImplementation2;
+import com.perhab.napalm.implementations.string.replace.CharReplace;
+import com.perhab.napalm.implementations.string.replace.RegexReplace;
 import com.perhab.napalm.statement.Execute;
 import com.perhab.napalm.statement.BaseStatement;
 import com.perhab.napalm.statement.Statement;
@@ -69,7 +73,11 @@ public class Runner {
 				ShortFor.class,
 				NormalMethodCall.class,
 				ReflectionMethodCall.class,
-				LazyReflectionMethodCall.class
+				ReflectionMethodCallWithExceptions.class,
+				LazyReflectionMethodCall.class,
+				InterfaceMethodCall.class,
+				CharReplace.class,
+				RegexReplace.class
 			};
 	}
 	

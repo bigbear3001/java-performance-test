@@ -6,5 +6,5 @@ import com.perhab.napalm.statement.Parameter;
 public interface CallMethod {
 	
 	@Execute(parameters=@Parameter("A"))
-	public String callMethod(String parameter);
+	public String callMethod(String parameter) throws Exception;
 }
