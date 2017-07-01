@@ -7,9 +7,9 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Parameter {
-	public static final String EMPTY_STRING = "";
+	String EMPTY_STRING = "";
 	
-	public static final String ANY_STRING = "ANY_STRING";
+	String ANY_STRING = "ANY_STRING";
 
 	String value() default EMPTY_STRING;
 }
