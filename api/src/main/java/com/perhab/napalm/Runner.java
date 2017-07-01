@@ -1,6 +1,7 @@
 package com.perhab.napalm;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 import com.perhab.napalm.discover.Discover;
@@ -9,8 +10,25 @@ import com.perhab.napalm.statement.Execute;
 import com.perhab.napalm.validation.ResultEqualsValidator;
 import com.perhab.napalm.validation.Validator;
 import com.perhab.napalm.validation.Validators;
+import lombok.extern.slf4j.Slf4j;
+import org.kohsuke.args4j.CmdLineException;
+import org.kohsuke.args4j.CmdLineParser;
+import org.kohsuke.args4j.Option;
+import org.kohsuke.args4j.spi.BooleanOptionHandler;
+import org.kohsuke.args4j.spi.RestOfArgumentsHandler;
+import org.kohsuke.args4j.spi.StringOptionHandler;
 
+@Slf4j
 public class Runner {
+
+	@Option(name = "-f", aliases = {"--markdown-file"}, usage = "name of the markdown file to generate", handler = StringOptionHandler.class)
+	String filename;
+
+	@Option(name = "-s", aliases = {"--silent"}, usage = "make runner silent (do not print out results)", handler = BooleanOptionHandler.class)
+	Boolean silent;
+
+	@Option(name ="", handler = RestOfArgumentsHandler.class)
+	String pendingArguments;
 
 	/**
 	 * Validators use to verify the results of the tes methods.
@@ -38,9 +56,23 @@ public class Runner {
 	 */
 	public static void main(final String[] args) {
 		Runner runner = new Runner();
-		Collection<Result> results = runner.run(discover());
-		new SystemOutPrinter().print(results);
-		
+		try {
+			new CmdLineParser(runner).parseArgument(args);
+			if (runner.pendingArguments != null) {
+				log.error("unkown argument: {}", runner.pendingArguments);
+				return;
+			}
+			Collection<Result> results = runner.run(discover());
+			if (runner.silent == null || Boolean.FALSE.equals(runner.silent)) {
+				new SystemOutPrinter().print(results);
+			}
+			if (runner.filename != null) {
+				new MarkdownFileOutPrinter(runner.filename).print(results);
+			}
+		} catch (CmdLineException e) {
+			log.error("Cannot run program:", e);
+		}
+
 	}
 
 	/**
@@ -66,7 +98,7 @@ public class Runner {
 
 	/**
 	 * Prepare the given implementations for running as a performance test.
-	 * @param implementations - array with classes that have a method annotated with {@link Execution}
+	 * @param implementations - array with classes that have a method annotated with {@link Execute}
 	 * @return prepared implementations (Statements)
 	 */
 	private Collection<StatementGroup> prepare(final Class<?>[] implementations) {

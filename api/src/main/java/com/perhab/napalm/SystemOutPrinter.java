@@ -21,7 +21,6 @@ public class SystemOutPrinter implements Printer {
 				}
 			}
 			System.out.println();
-			
 		}
 	}
 

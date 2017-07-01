@@ -3,19 +3,14 @@ package com.perhab.napalm.discover;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.reflections.Configuration;
-import org.reflections.ReflectionUtils;
 import org.reflections.Reflections;
 import org.reflections.scanners.MethodAnnotationsScanner;
-import org.reflections.scanners.ResourcesScanner;
 import org.reflections.scanners.SubTypesScanner;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
-import org.reflections.util.FilterBuilder;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
@@ -38,7 +33,6 @@ public class Discover {
 				.setUrls(ClasspathHelper.forJavaClassPath())
 				.setScanners(new SubTypesScanner());
 			classReflections = new Reflections(configuration);
-		
 		}
 	}
 	

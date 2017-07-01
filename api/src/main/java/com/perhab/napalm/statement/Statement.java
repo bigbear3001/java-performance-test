@@ -6,8 +6,8 @@ import com.perhab.napalm.Result;
 
 public interface Statement {
 
-	public abstract Result execute();
+	Result execute();
 
-	public abstract Method getMethod();
+	Method getMethod();
 
 }
