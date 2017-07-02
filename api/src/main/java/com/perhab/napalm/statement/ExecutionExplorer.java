@@ -1,8 +1,11 @@
 package com.perhab.napalm.statement;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
+@Slf4j
 public final class ExecutionExplorer {
 
 	private ExecutionExplorer() { }
@@ -58,15 +61,25 @@ public final class ExecutionExplorer {
 	}
 
 	private static Object convertToArray(Class<?> clazz, Parameter[] parameters) {
-		Integer[] integers = new Integer[parameters.length];
-		for (int i = 0; i < parameters.length; i++) {
-			integers[i] = (Integer) convertTo(Integer.class, parameters[i].value());
+		String arrayClassName = clazz.getName().substring(2, clazz.getName().length() - 1);
+		Class<?> arrayClass;
+		try {
+			arrayClass = Class.forName(arrayClassName);
+		} catch (ClassNotFoundException e) {
+			log.error("Cannot find class for array name {}", clazz, e);
+			throw new StatementNotInitalizableException("Cannot find class for array name " + clazz, e);
 		}
-		return integers;
+		Object[] values = new Object[parameters.length];
+		for (int i = 0; i < parameters.length; i++) {
+			values[i] = convertTo(arrayClass, parameters[i].value());
+		}
+		return values;
 	}
 
 	private static Object convertTo(Class<?> clazz, Object parameter) {
-		if (parameter instanceof String && clazz.equals(Integer.class)) {
+		if (clazz.isAssignableFrom(parameter.getClass())) {
+			return clazz.cast(parameter);
+		} else if (parameter instanceof String && clazz.equals(Integer.class)) {
 			return Integer.parseInt((String) parameter);
 		}
 		throw new StatementNotInitalizableException("Cannot convert " + parameter + "(" + parameter.getClass() + ") to " + clazz);
