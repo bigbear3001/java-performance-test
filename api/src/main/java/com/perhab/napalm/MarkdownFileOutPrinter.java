@@ -2,12 +2,15 @@ package com.perhab.napalm;
 
 import lombok.Cleanup;
 import lombok.extern.slf4j.Slf4j;
+import oshi.SystemInfo;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
 
 /**
  * Created by bigbear3001 on 01.07.17.
@@ -34,6 +37,10 @@ public class MarkdownFileOutPrinter implements Printer {
             FileOutputStream fos = new FileOutputStream(file);
             @Cleanup
             OutputStreamWriter writer = new OutputStreamWriter(fos);
+            writer.append("Performance Report\n");
+            writer.append("==================\n");
+            writer.append("Created at " + new SimpleDateFormat("dd.MM.yyyy").format(new Date()) + "\n");
+            writer.append("on " + getSystemInformation() + "\n\n");
             writer.append("|Name|  1|100|10000|1000000|\n");
             writer.append("|:---|--:|--:|----:|------:|\n");
             for (Result result : results) {
@@ -55,5 +62,10 @@ public class MarkdownFileOutPrinter implements Printer {
         } catch (java.io.IOException e) {
             log.error("Cannot write to file: {}", file.getAbsolutePath(), e);
         }
+    }
+
+    private String getSystemInformation() {
+        SystemInfo systemInfo = new SystemInfo();
+        return systemInfo.getHardware().getProcessor().toString();
     }
 }

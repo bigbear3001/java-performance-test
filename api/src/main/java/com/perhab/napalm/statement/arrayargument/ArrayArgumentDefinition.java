@@ -1,6 +1,6 @@
-package com.perhab.napalm.statement;
+package com.perhab.napalm.statement.arrayargument;
 
-import com.perhab.napalm.statement.arrayargument.InvalidArrayArgumentDefinition;
+import com.perhab.napalm.statement.Parameter;
 
 import java.util.Iterator;
 

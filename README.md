@@ -6,8 +6,20 @@ is the fastest at runtime.
 
 running with maven
 ------------------
-
 like in the implementation module you can configure the runner to run with maven to create a report
+
+1. add the dependency
+```
+<dependencies>
+    <dependency>
+        <groupId>com.perhab.java.performance</groupId>
+        <artifactId>napalm-api</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+    ...
+</dependencies>
+```
+2. add build plugin definition for the [exec-maven-plugin](http://www.mojohaus.org/exec-maven-plugin/index.html)
 ```
 <plugin>
     <groupId>org.codehaus.mojo</groupId>
