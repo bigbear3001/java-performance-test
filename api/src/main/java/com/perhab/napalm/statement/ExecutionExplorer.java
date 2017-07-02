@@ -69,7 +69,14 @@ public final class ExecutionExplorer {
 			log.error("Cannot find class for array name {}", clazz, e);
 			throw new StatementNotInitalizableException("Cannot find class for array name " + clazz, e);
 		}
-		Object[] values = new Object[parameters.length];
+		Object[] values;
+		if (arrayClass == Integer.class) {
+			values = new Integer[parameters.length];
+		} else if (arrayClass == String.class) {
+			values = new String[parameters.length];
+		} else {
+			values = new Object[parameters.length];
+		}
 		for (int i = 0; i < parameters.length; i++) {
 			values[i] = convertTo(arrayClass, parameters[i].value());
 		}
