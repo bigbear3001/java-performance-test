@@ -5,6 +5,6 @@ import com.perhab.napalm.statement.Parameter;
 
 public interface ArrayIteration {
 	
-	@Execute(parameters = {@Parameter("1"), @Parameter("2"), @Parameter("3"), @Parameter("4")})
+	@Execute(parameters = {@Parameter(arrayDefinition = "1...20")})
 	Integer sum(final Integer[] integers);
 }
