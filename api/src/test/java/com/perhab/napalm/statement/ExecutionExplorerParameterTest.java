@@ -58,6 +58,21 @@ public class ExecutionExplorerParameterTest {
     }
 
     @Test
+    public void testIntegerArrayDefinitionParameter() {
+        Method method = ExecutionExplorer.findExecutionMethod(ExecutionExplorerParameterTest.ClassWithIntegerArrayDefinitionParameter.class);
+        assertNotNull("Expected ExecutionExplorer", method);
+        Object[] arguments = ExecutionExplorer.getArguments(method);
+        assertArrayEquals("Expected to get integer parameters back.", new Object[]{new Integer[]{1, 2, 3, 4, 5}}, arguments);
+    }
+
+    public static class ClassWithIntegerArrayDefinitionParameter {
+        @Execute(parameters = {@Parameter(arrayDefinition = "1...5")})
+        public void method(Integer[] a) {
+
+        }
+    }
+
+    @Test
     public void testStringArrayParameter() {
         Method method = ExecutionExplorer.findExecutionMethod(ExecutionExplorerParameterTest.ClassWithStringArrayParameter.class);
         assertNotNull("Expected ExecutionExplorer", method);

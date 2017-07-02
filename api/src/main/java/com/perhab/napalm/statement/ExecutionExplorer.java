@@ -69,16 +69,30 @@ public final class ExecutionExplorer {
 			log.error("Cannot find class for array name {}", clazz, e);
 			throw new StatementNotInitalizableException("Cannot find class for array name " + clazz, e);
 		}
+
+		ArrayArgumentDefinition definition = null;
+		int length = parameters.length;
+		if (length == 1 && !parameters[0].arrayDefinition().isEmpty()) {
+			definition = ArrayArgumentDefinition.parse(parameters[0]);
+			length = definition.getLength();
+		}
 		Object[] values;
 		if (arrayClass == Integer.class) {
-			values = new Integer[parameters.length];
+			values = new Integer[length];
 		} else if (arrayClass == String.class) {
-			values = new String[parameters.length];
+			values = new String[length];
 		} else {
-			values = new Object[parameters.length];
+			values = new Object[length];
 		}
-		for (int i = 0; i < parameters.length; i++) {
-			values[i] = convertTo(arrayClass, parameters[i].value());
+		if (definition == null) {
+			for (int i = 0; i < length; i++) {
+				values[i] = convertTo(arrayClass, parameters[i].value());
+			}
+		} else {
+			int i = 0;
+			for (String value : definition.getValues()) {
+				values[i++] = convertTo(arrayClass, value);
+			}
 		}
 		return values;
 	}
