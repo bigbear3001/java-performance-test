@@ -16,5 +16,9 @@ public @interface ExecuteParallel {
 
 	Parameter[] parameters();
 	int[] iterations() default {1, Execute.HUNDRED, Execute.TEN_THOUSAND, Execute.MILLION};
+
+	/**
+	 * @return number of threads to use for executing.
+	 */
 	int threads() default 2;
 }

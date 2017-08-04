@@ -124,4 +124,11 @@ public final class ExecutionExplorer {
 		throw new StatementNotInitalizableException("Cannot convert " + parameter + "(" + parameter.getClass() + ") to " + clazz);
 	}
 
+	public static int getThreads(Method method) {
+		ExecuteParallel executeParallel = method.getAnnotation(ExecuteParallel.class);
+		if (executeParallel != null) {
+			return executeParallel.threads();
+		}
+		return 1;
+	}
 }

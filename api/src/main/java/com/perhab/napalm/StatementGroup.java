@@ -39,7 +39,7 @@ public class StatementGroup extends ArrayList<Statement> {
 
 	public Collection<Result> execute(Validators validators) {
 		ArrayList<Result> result = new ArrayList<Result>();
-		for(Statement statement : this) {
+		for (Statement statement : this) {
 			result.add(statement.execute());
 		}
 		validators.validate(result);
