@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Pooled implements FormatDate {
+public class Pooled implements FormatDate, FormatDateParallel {
 	
 	private SimpleDateFormatPool dateFormat = new SimpleDateFormatPool(DATE_FORMAT);
 

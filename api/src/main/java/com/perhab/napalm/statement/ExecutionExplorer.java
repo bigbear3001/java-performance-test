@@ -4,38 +4,40 @@ import com.perhab.napalm.statement.arrayargument.ArrayArgumentDefinition;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 @Slf4j
 public final class ExecutionExplorer {
 
 	private ExecutionExplorer() { }
 	
-	public static Method findExecutionMethod(Class<?> clazz) {
+	public static Method[] findExecutionMethods(Class<?> clazz) {
+		ArrayList<Method> foundMethods = new ArrayList<>();
 		for (Method method : clazz.getDeclaredMethods()) {
 			Execute annotation = method.getAnnotation(Execute.class);
 			if (annotation != null) {
-				return method;
+				foundMethods.add(method);
+			}
+			ExecuteParallel annotationParallel = method.getAnnotation(ExecuteParallel.class);
+			if (annotationParallel != null) {
+				foundMethods.add(method);
 			}
 		}
 		Class<?> superclass = clazz.getSuperclass();
 		if (superclass != null) {
-			Method method = findExecutionMethod(superclass);
-			if (method != null) {
-				return method;
-			}
+			Method[] methods = findExecutionMethods(superclass);
+			foundMethods.addAll(Arrays.asList(methods));
 		}
 		for (Class<?> interfaceClass : clazz.getInterfaces()) {
-			Method method = findExecutionMethod(interfaceClass);
-			if (method != null) {
-				return method;
-			}
+			Method[] methods = findExecutionMethods(interfaceClass);
+			foundMethods.addAll(Arrays.asList(methods));
 		}
-		return null;
+		return foundMethods.toArray(new Method[foundMethods.size()]);
 	}
 
 	public static Object[] getArguments(Method method) {
-		Execute execution = method.getAnnotation(Execute.class);
-		Parameter[] parameters = execution.parameters();
+		Parameter[] parameters = getParameters(method);
 		Class<?>[] parameterTypes = method.getParameterTypes();
 		Object[] values = new Object[parameterTypes.length];
 		for (int i = 0; i < parameterTypes.length; i++) {
@@ -51,13 +53,29 @@ public final class ExecutionExplorer {
 		return values;
 	}
 
+	private static Parameter[] getParameters(Method method) {
+		Execute execution = method.getAnnotation(Execute.class);
+		if (execution != null) {
+			return execution.parameters();
+		} else {
+			ExecuteParallel executeParallel = method.getAnnotation(ExecuteParallel.class);
+			return  executeParallel.parameters();
+		}
+	}
+
 	/**
 	 * @param method - method to inspect for the {@link Execute} annotation where the iterations are set.
 	 * @return iterations set for method
 	 */
 	public static int[] getIterations(final Method method) {
 		Execute execution = method.getAnnotation(Execute.class);
-		return execution.iterations();
+		if (execution != null) {
+			return execution.iterations();
+		} else {
+			ExecuteParallel executeParallel = method.getAnnotation(ExecuteParallel.class);
+			return executeParallel.iterations();
+		}
+
 	}
 
 	private static Object convertToArray(Class<?> clazz, Parameter[] parameters) {

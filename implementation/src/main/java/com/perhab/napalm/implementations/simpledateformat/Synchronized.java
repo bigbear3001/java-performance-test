@@ -3,7 +3,7 @@ package com.perhab.napalm.implementations.simpledateformat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Synchronized implements FormatDate {
+public class Synchronized implements FormatDate, FormatDateParallel {
 	
 	private SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
 

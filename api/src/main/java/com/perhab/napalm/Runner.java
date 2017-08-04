@@ -7,6 +7,7 @@ import java.util.Collection;
 import com.perhab.napalm.discover.Discover;
 import com.perhab.napalm.statement.BaseStatement;
 import com.perhab.napalm.statement.Execute;
+import com.perhab.napalm.statement.ExecuteParallel;
 import com.perhab.napalm.validation.ResultEqualsValidator;
 import com.perhab.napalm.validation.Validator;
 import com.perhab.napalm.validation.Validators;
@@ -79,7 +80,7 @@ public class Runner {
 	 * @return all classes discovered that have a method that is annotated with {@link Execute}.
 	 */
 	private static Class<?>[] discover() {
-		return Discover.findClassesWithMethodsAnnotatedWith(Execute.class);
+		return Discover.findClassesWithMethodsAnnotatedWith(Execute.class, ExecuteParallel.class);
 	}
 	
 	/**
@@ -104,9 +105,10 @@ public class Runner {
 	private Collection<StatementGroup> prepare(final Class<?>[] implementations) {
 		ArrayList<StatementGroup> statementGroups = new ArrayList<StatementGroup>(implementations.length);
 		for (Class<?> implementation : implementations) {
-			BaseStatement statement = new BaseStatement(implementation);
-			if (!statementGroups.contains(statement.getGroup())) {
-				statementGroups.add(statement.getGroup());
+			for (BaseStatement statement : BaseStatement.getBaseStatements(implementation)) {
+				if (!statementGroups.contains(statement.getGroup())) {
+					statementGroups.add(statement.getGroup());
+				}
 			}
 		}
 		return statementGroups;

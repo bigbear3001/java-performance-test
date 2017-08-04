@@ -14,9 +14,10 @@ import static org.junit.Assert.assertNotNull;
 public class ExecutionExplorerParameterTest {
     @Test
     public void testStringParameters() {
-        Method method = ExecutionExplorer.findExecutionMethod(ExecutionExplorerParameterTest.ClassWithStringParameters.class);
-        assertNotNull("Expected ExecutionExplorer", method);
-        Object[] arguments = ExecutionExplorer.getArguments(method);
+        Method[] methods = ExecutionExplorer.findExecutionMethods(ExecutionExplorerParameterTest.ClassWithStringParameters.class);
+        assertNotNull("Expected ExecutionExplorer to find method", methods);
+        assertEquals("Expected ExecutionExplorer to find only one method", 1, methods.length);
+        Object[] arguments = ExecutionExplorer.getArguments(methods[0]);
         assertArrayEquals("Expected to get string parameters back.", new Object[]{"1", "2"}, arguments);
     }
 
@@ -29,9 +30,10 @@ public class ExecutionExplorerParameterTest {
 
     @Test
     public void testIntegerParameters() {
-        Method method = ExecutionExplorer.findExecutionMethod(ExecutionExplorerParameterTest.ClassWithIntegerParameters.class);
-        assertNotNull("Expected ExecutionExplorer", method);
-        Object[] arguments = ExecutionExplorer.getArguments(method);
+        Method[] methods = ExecutionExplorer.findExecutionMethods(ExecutionExplorerParameterTest.ClassWithIntegerParameters.class);
+        assertNotNull("Expected ExecutionExplorer to find method", methods);
+        assertEquals("Expected ExecutionExplorer to find only one method", 1, methods.length);
+        Object[] arguments = ExecutionExplorer.getArguments(methods[0]);
         assertArrayEquals("Expected to get integer parameters back.", new Object[]{1, 2}, arguments);
     }
 
@@ -44,9 +46,10 @@ public class ExecutionExplorerParameterTest {
 
     @Test
     public void testIntegerArrayParameter() {
-        Method method = ExecutionExplorer.findExecutionMethod(ExecutionExplorerParameterTest.ClassWithIntegerArrayParameter.class);
-        assertNotNull("Expected ExecutionExplorer", method);
-        Object[] arguments = ExecutionExplorer.getArguments(method);
+        Method[] methods = ExecutionExplorer.findExecutionMethods(ExecutionExplorerParameterTest.ClassWithIntegerArrayParameter.class);
+        assertNotNull("Expected ExecutionExplorer to find methods", methods);
+        assertEquals("Expected ExecutionExplorer to find only one methods", 1, methods.length);
+        Object[] arguments = ExecutionExplorer.getArguments(methods[0]);
         assertArrayEquals("Expected to get integer parameters back.", new Object[]{new Integer[]{1, 2}}, arguments);
     }
 
@@ -59,9 +62,10 @@ public class ExecutionExplorerParameterTest {
 
     @Test
     public void testIntegerArrayDefinitionParameter() {
-        Method method = ExecutionExplorer.findExecutionMethod(ExecutionExplorerParameterTest.ClassWithIntegerArrayDefinitionParameter.class);
-        assertNotNull("Expected ExecutionExplorer", method);
-        Object[] arguments = ExecutionExplorer.getArguments(method);
+        Method[] methods = ExecutionExplorer.findExecutionMethods(ExecutionExplorerParameterTest.ClassWithIntegerArrayDefinitionParameter.class);
+        assertNotNull("Expected ExecutionExplorer to find method", methods);
+        assertEquals("Expected ExecutionExplorer to find only one method", 1, methods.length);
+        Object[] arguments = ExecutionExplorer.getArguments(methods[0]);
         assertArrayEquals("Expected to get integer parameters back.", new Object[]{new Integer[]{1, 2, 3, 4, 5}}, arguments);
     }
 
@@ -74,9 +78,10 @@ public class ExecutionExplorerParameterTest {
 
     @Test
     public void testStringArrayParameter() {
-        Method method = ExecutionExplorer.findExecutionMethod(ExecutionExplorerParameterTest.ClassWithStringArrayParameter.class);
-        assertNotNull("Expected ExecutionExplorer", method);
-        Object[] arguments = ExecutionExplorer.getArguments(method);
+        Method[] methods = ExecutionExplorer.findExecutionMethods(ExecutionExplorerParameterTest.ClassWithStringArrayParameter.class);
+        assertNotNull("Expected ExecutionExplorer to find method", methods);
+        assertEquals("Expected ExecutionExplorer to find only one method", 1, methods.length);
+        Object[] arguments = ExecutionExplorer.getArguments(methods[0]);
         assertArrayEquals("Expected to get integer parameters back.", new Object[]{new String[]{"1", "2"}}, arguments);
     }
 

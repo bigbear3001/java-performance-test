@@ -2,12 +2,16 @@ package com.perhab.napalm.statement;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import com.perhab.napalm.Result;
 import com.perhab.napalm.StatementGroup;
 
+@AllArgsConstructor
 public class BaseStatement implements Statement {
 
 	private Object implementationObject;
@@ -15,37 +19,32 @@ public class BaseStatement implements Statement {
 	@Getter
 	private Method method;
 	
-	@Getter
-	private StatementGroup group;
+	@Getter(lazy = true)
+	private final StatementGroup group = StatementGroup.getStatementGroup(this);
 	
 	@Getter
 	private Object[] arguments;
 	
 	private int[] iterations;
-	
-	public BaseStatement(Class<?> implementation) {
-		try {
-			implementationObject = implementation.getConstructor(new Class[0]).newInstance(new Object[]{});
-		} catch (SecurityException e) {
-			throw new StatementNotInitalizableException("Cannot find or access no args constructor of " + implementation, e);
-		} catch (NoSuchMethodException e) {
-			throw new StatementNotInitalizableException("Cannot find or access no args constructor of " + implementation, e);
-		} catch (IllegalArgumentException e) {
-			throw new StatementNotInitalizableException("Cannot instanciate object with no args constructor (" + implementation + ")", e);
-		} catch (InstantiationException e) {
-			throw new StatementNotInitalizableException("Cannot instanciate object with no args constructor (" + implementation + ")", e);
-		} catch (IllegalAccessException e) {
-			throw new StatementNotInitalizableException("Cannot instanciate object with no args constructor (" + implementation + ")", e);
-		} catch (InvocationTargetException e) {
-			throw new StatementNotInitalizableException("Cannot instanciate object with no args constructor (" + implementation + ")", e);
+
+	public static List<BaseStatement> getBaseStatements(Class<?> implementation) {
+		ArrayList<BaseStatement> statements = new ArrayList<>();
+		for (Method executionMethod : ExecutionExplorer.findExecutionMethods(implementation)) {
+			try {
+				statements.add(new BaseStatement(
+						implementation.getConstructor(new Class[0]).newInstance(),
+						executionMethod,
+						ExecutionExplorer.getArguments(executionMethod),
+						ExecutionExplorer.getIterations(executionMethod)
+				));
+			} catch (SecurityException | NoSuchMethodException e) {
+				throw new StatementNotInitalizableException("Cannot find or access no args constructor of " + implementation, e);
+			} catch (IllegalArgumentException | InvocationTargetException | IllegalAccessException | InstantiationException e) {
+				throw new StatementNotInitalizableException("Cannot instanciate object with no args constructor (" + implementation + ")", e);
+			}
+
 		}
-		method = ExecutionExplorer.findExecutionMethod(implementation);
-		if (method == null) {
-			throw new StatementNotInitalizableException("Cannot find a method annotaed with @Execution in this class " + implementation);
-		}
-		arguments = ExecutionExplorer.getArguments(method);
-		iterations = ExecutionExplorer.getIterations(method);
-		group = StatementGroup.getStatementGroup(this);
+		return statements;
 	}
 
 	/* (non-Javadoc)

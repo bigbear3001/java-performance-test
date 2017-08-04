@@ -3,9 +3,12 @@ package com.perhab.napalm.discover;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import com.perhab.napalm.statement.Execute;
+import com.perhab.napalm.statement.ExecuteParallel;
 import org.reflections.Reflections;
 import org.reflections.scanners.MethodAnnotationsScanner;
 import org.reflections.scanners.SubTypesScanner;
@@ -37,17 +40,19 @@ public class Discover {
 	}
 	
 
-	public static Class<?>[] findClassesWithMethodsAnnotatedWith(final Class<? extends Annotation> annotation) {
+	public static Class<?>[] findClassesWithMethodsAnnotatedWith(final Class<? extends Annotation> ... annotations) {
 		init();
-		ArrayList<Class<?>> classes = new ArrayList<Class<?>>(); 
-		for (Method method : methodReflections.getMethodsAnnotatedWith(annotation)) {
-			Class<?> declaringClass = method.getDeclaringClass();
-			if (declaringClass.isInterface()) {
-				classes.addAll(findClassesForInterface(declaringClass));
-			} else {
-				classes.add(declaringClass);
+		Set<Class<?>> classes = new HashSet<>();
+		for (Class<? extends Annotation> annotation : annotations) {
+			for (Method method : methodReflections.getMethodsAnnotatedWith(annotation)) {
+				Class<?> declaringClass = method.getDeclaringClass();
+				if (declaringClass.isInterface()) {
+					classes.addAll(findClassesForInterface(declaringClass));
+				} else {
+					classes.add(declaringClass);
+				}
+
 			}
-			
 		}
 		return classes.toArray(new Class<?>[classes.size()]);
 	}
