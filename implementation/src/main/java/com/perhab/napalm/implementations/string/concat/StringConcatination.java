@@ -1,5 +1,6 @@
 package com.perhab.napalm.implementations.string.concat;
 
+import com.perhab.napalm.statement.Description;
 import com.perhab.napalm.statement.Execute;
 import com.perhab.napalm.statement.Parameter;
 
@@ -13,5 +14,6 @@ public interface StringConcatination {
 	 * @return a + b
 	 */
 	@Execute(parameters = {@Parameter("a"), @Parameter("b") }, iterations = {1, Execute.HUNDRED, Execute.TEN_THOUSAND, Execute.MILLION })
+	@Description("Tests the performance of concatinating two Strings together")
 	String concat(String a, String b);
 }

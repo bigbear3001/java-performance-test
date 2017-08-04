@@ -55,6 +55,9 @@ public class HtmlFileOutPrinter implements Printer {
                         writer.append("</tbody></table></div>");
                     }
                     writer.append("<div class=\"row\"><h2>" + implementedInterface.getCanonicalName() + "</h2>\n");
+                    if (result.getStatement().getGroup().getDescription() != null) {
+                        writer.append("<p>" + result.getStatement().getGroup().getDescription() + "</p>");
+                    }
                     lastImplementedInterface = implementedInterface;
                     writer.append("<table class=\"table\"><thead><tr>" +
                             "<th>Name</th>" +
