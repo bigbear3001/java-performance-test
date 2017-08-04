@@ -37,6 +37,8 @@
 								<classpath />
 								<argument>com.perhab.napalm.Runner</argument>
 								<argument>-f</argument>
+								<argument>${project.build.directory}/Results.html</argument>
+								<argument>-m</argument>
 								<argument>${project.build.directory}/Results.md</argument>
 								<argument>-s</argument>
 							</arguments>

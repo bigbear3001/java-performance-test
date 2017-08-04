@@ -22,8 +22,11 @@ import org.kohsuke.args4j.spi.StringOptionHandler;
 @Slf4j
 public class Runner {
 
-	@Option(name = "-f", aliases = {"--markdown-file"}, usage = "name of the markdown file to generate", handler = StringOptionHandler.class)
+	@Option(name = "-f", aliases = {"--html-file"}, usage = "name of the html file to generate", handler = StringOptionHandler.class)
 	String filename;
+
+	@Option(name = "-m", aliases = {"--markdown-file"}, usage = "name of the markdown file to generate", handler = StringOptionHandler.class)
+	String markdownFilename;
 
 	@Option(name = "-s", aliases = {"--silent"}, usage = "make runner silent (do not print out results)", handler = BooleanOptionHandler.class)
 	Boolean silent;
@@ -68,7 +71,10 @@ public class Runner {
 				new SystemOutPrinter().print(results);
 			}
 			if (runner.filename != null) {
-				new MarkdownFileOutPrinter(runner.filename).print(results);
+				new HtmlFileOutPrinter(runner.filename).print(results);
+			}
+			if (runner.markdownFilename != null) {
+				new MarkdownFileOutPrinter(runner.markdownFilename).print(results);
 			}
 		} catch (CmdLineException e) {
 			log.error("Cannot run program:", e);
