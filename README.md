@@ -49,3 +49,8 @@ like in the implementation module you can configure the runner to run with maven
 ```
 This uses the exec-maven-plugin to call the Runner and scan for classes annotated with Execute. Additionaly it creates
 a report output in Results.md and turns the Runner into silent mode.
+
+sample result
+-------------
+Here you can see a sample result from the napalm-implementation module of this project:
+https://www.perhab.com/java-performance-test/Results.html
