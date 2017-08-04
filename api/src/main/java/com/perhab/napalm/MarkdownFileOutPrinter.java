@@ -41,9 +41,15 @@ public class MarkdownFileOutPrinter implements Printer {
             writer.append("==================\n");
             writer.append("Created at " + new SimpleDateFormat("dd.MM.yyyy").format(new Date()) + "\n");
             writer.append("on " + getSystemInformation() + "\n\n");
-            writer.append("|Name|  1|100|10000|1000000|\n");
-            writer.append("|:---|--:|--:|----:|------:|\n");
+            writer.append("|**Name**|**1**|**100**|**10000**|**1000000**|\n");
+            writer.append("|:-------|----:|------:|--------:|----------:|\n");
+            Class<?> lastImplementedInterface = null;
             for (Result result : results) {
+                Class<?> implementedInterface = result.getStatement().getGroup().getImplementedInterface();
+                if (implementedInterface != lastImplementedInterface) {
+                    writer.append("|**" + implementedInterface.getCanonicalName() + "**|||||\n");
+                    lastImplementedInterface = implementedInterface;
+                }
                 writer.append("|");
                 writer.append(result.getStatement().toString());
                 long startTime = STARTTIME_NOT_SET;
