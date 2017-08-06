@@ -1,5 +1,6 @@
 package com.perhab.napalm;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -8,9 +9,11 @@ import com.perhab.napalm.discover.Discover;
 import com.perhab.napalm.statement.BaseStatement;
 import com.perhab.napalm.statement.Execute;
 import com.perhab.napalm.statement.ExecuteParallel;
+import com.perhab.napalm.statement.ExecutionExplorer;
 import com.perhab.napalm.validation.ResultEqualsValidator;
 import com.perhab.napalm.validation.Validator;
 import com.perhab.napalm.validation.Validators;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
@@ -18,6 +21,7 @@ import org.kohsuke.args4j.Option;
 import org.kohsuke.args4j.spi.BooleanOptionHandler;
 import org.kohsuke.args4j.spi.RestOfArgumentsHandler;
 import org.kohsuke.args4j.spi.StringOptionHandler;
+import org.kohsuke.args4j.spi.URIOptionHandler;
 
 @Slf4j
 public class Runner {
@@ -30,6 +34,9 @@ public class Runner {
 
 	@Option(name = "-s", aliases = {"--silent"}, usage = "make runner silent (do not print out results)", handler = BooleanOptionHandler.class)
 	Boolean silent;
+
+	@Option(name = "--source-base-uri", usage = "set new base uri where to fetch the source code from.", handler = URIOptionHandler.class)
+	URI baseURI;
 
 	@Option(name ="", handler = RestOfArgumentsHandler.class)
 	String pendingArguments;
@@ -65,6 +72,9 @@ public class Runner {
 			if (runner.pendingArguments != null) {
 				log.error("unkown argument: {}", runner.pendingArguments);
 				return;
+			}
+			if (runner.baseURI != null) {
+				ExecutionExplorer.setBaseURI(runner.baseURI);
 			}
 			Collection<Result> results = runner.run(discover());
 			if (runner.silent == null || Boolean.FALSE.equals(runner.silent)) {

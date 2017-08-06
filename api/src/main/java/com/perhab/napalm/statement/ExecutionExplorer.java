@@ -1,14 +1,23 @@
 package com.perhab.napalm.statement;
 
 import com.perhab.napalm.statement.arrayargument.ArrayArgumentDefinition;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 @Slf4j
 public final class ExecutionExplorer {
+
+	@Setter
+	private static URI baseURI;
 
 	private ExecutionExplorer() { }
 	
@@ -130,5 +139,23 @@ public final class ExecutionExplorer {
 			return executeParallel.threads();
 		}
 		return 1;
+	}
+
+	public static String getSourceCode(Method method, Object implementationObject) {
+		String resourceName = implementationObject.getClass().getCanonicalName().replace('.', '/') + ".java";
+		try {
+			InputStream inputStream;
+			if (baseURI != null) {
+				URI uri = baseURI.resolve(resourceName);
+				URL url = uri.toURL();
+				inputStream = url.openStream();
+			} else {
+				inputStream = implementationObject.getClass().getResourceAsStream("/" + resourceName);
+			}
+			String sourceCode = IOUtils.toString(inputStream);
+			return sourceCode;
+		} catch (IOException e) {
+			throw new SourceCodeNotFoundException("Cannot get source code for " + implementationObject.getClass().getCanonicalName() + "#" + method.getName() + "()", e);
+		}
 	}
 }

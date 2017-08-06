@@ -23,6 +23,9 @@ public class BaseStatement implements Statement {
 	
 	@Getter(lazy = true)
 	private final StatementGroup group = StatementGroup.getStatementGroup(this);
+
+	@Getter(lazy = true)
+	private final String sourceCode = ExecutionExplorer.getSourceCode(method, implementationObject);
 	
 	@Getter
 	private Object[] arguments;

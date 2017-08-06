@@ -40,6 +40,8 @@
 								<argument>${project.build.directory}/Results.html</argument>
 								<argument>-m</argument>
 								<argument>${project.build.directory}/Results.md</argument>
+								<argument>--source-base-uri</argument>
+								<argument>https://raw.githubusercontent.com/bigbear3001/java-performance-test/master/implementation/src/main/java/</argument>
 								<argument>-s</argument>
 							</arguments>
 						</configuration>

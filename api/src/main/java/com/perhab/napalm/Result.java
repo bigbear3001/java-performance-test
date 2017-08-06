@@ -7,6 +7,15 @@ import com.perhab.napalm.statement.BaseStatement;
 
 public class Result {
 
+	private static int nextId = 0;
+
+	@Getter(lazy = true)
+	private final int id = getNextId();
+
+	private synchronized int getNextId() {
+		return nextId++;
+	}
+
 	@Getter
 	private BaseStatement statement;
 	

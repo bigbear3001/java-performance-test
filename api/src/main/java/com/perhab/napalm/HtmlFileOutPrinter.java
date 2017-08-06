@@ -67,9 +67,9 @@ public class HtmlFileOutPrinter implements Printer {
                             "<th class=\"text-right\"><span title=\"time needed tor one million invocations\">1000000</span></th>" +
                             "</tr></thead><tbody>\n");
                 }
-                writer.append("<tr><td>");
+                writer.append("<tr><td><span title=\"" + escapeHtmlAttribute(result.getStatement().getSourceCode()) + "\">");
                 writer.append(result.getStatement().toString());
-                writer.append("");
+                writer.append("</span>");
                 long startTime = STARTTIME_NOT_SET;
                 for (long time : result.getTimes()) {
                     if (startTime == STARTTIME_NOT_SET) {
@@ -88,6 +88,10 @@ public class HtmlFileOutPrinter implements Printer {
         } catch (java.io.IOException e) {
             log.error("Cannot write to file: {}", file.getAbsolutePath(), e);
         }
+    }
+
+    private static String escapeHtmlAttribute(String value) {
+        return value.replaceAll("\"", "&quot;");
     }
 
     private String getSystemInformation() {
