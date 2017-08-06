@@ -152,10 +152,14 @@ public final class ExecutionExplorer {
 			} else {
 				inputStream = implementationObject.getClass().getResourceAsStream("/" + resourceName);
 			}
-			String sourceCode = IOUtils.toString(inputStream);
-			return sourceCode;
+			if (inputStream != null) {
+				String sourceCode = IOUtils.toString(inputStream);
+				return sourceCode;
+			}
+			return null;
 		} catch (IOException e) {
-			throw new SourceCodeNotFoundException("Cannot get source code for " + implementationObject.getClass().getCanonicalName() + "#" + method.getName() + "()", e);
+			log.error("Cannot get source code for " + implementationObject.getClass().getCanonicalName() + "#" + method.getName() + "(...)", e);
 		}
+		return null;
 	}
 }

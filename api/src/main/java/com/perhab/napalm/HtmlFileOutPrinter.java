@@ -67,7 +67,11 @@ public class HtmlFileOutPrinter implements Printer {
                             "<th class=\"text-right\"><span title=\"time needed tor one million invocations\">1000000</span></th>" +
                             "</tr></thead><tbody>\n");
                 }
-                writer.append("<tr><td><span title=\"" + escapeHtmlAttribute(result.getStatement().getSourceCode()) + "\">");
+                if (result.getStatement().getSourceCode() != null) {
+                    writer.append("<tr><td><span title=\"" + escapeHtmlAttribute(result.getStatement().getSourceCode()) + "\">");
+                } else {
+                    writer.append("<tr><td><span>");
+                }
                 writer.append(result.getStatement().toString());
                 writer.append("</span>");
                 long startTime = STARTTIME_NOT_SET;

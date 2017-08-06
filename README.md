@@ -39,7 +39,7 @@ like in the implementation module you can configure the runner to run with maven
                     <classpath />
                     <argument>com.perhab.napalm.Runner</argument>
                     <argument>-f</argument>
-                    <argument>${project.build.directory}/Results.md</argument>
+                    <argument>${project.build.directory}/Results.html</argument>
                     <argument>-s</argument>
                 </arguments>
             </configuration>
