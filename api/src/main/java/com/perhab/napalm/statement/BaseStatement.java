@@ -17,19 +17,19 @@ import lombok.extern.slf4j.Slf4j;
 public class BaseStatement implements Statement {
 
 	private Object implementationObject;
-	
+
 	@Getter
 	private Method method;
-	
+
 	@Getter(lazy = true)
 	private final StatementGroup group = StatementGroup.getStatementGroup(this);
 
 	@Getter(lazy = true)
 	private final String sourceCode = ExecutionExplorer.getSourceCode(method, implementationObject);
-	
+
 	@Getter
 	private Object[] arguments;
-	
+
 	private int[] iterations;
 
 	private int threads;
@@ -41,7 +41,7 @@ public class BaseStatement implements Statement {
 				statements.add(new BaseStatement(
 						implementation.getConstructor(new Class[0]).newInstance(),
 						executionMethod,
-						ExecutionExplorer.getArguments(executionMethod),
+						ExecutionExplorer.getArguments(executionMethod, implementation),
 						ExecutionExplorer.getIterations(executionMethod),
 						ExecutionExplorer.getThreads(executionMethod)
 				));

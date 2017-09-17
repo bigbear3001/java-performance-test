@@ -7,11 +7,14 @@ import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 public final class ExecutionExplorer {
@@ -46,20 +49,37 @@ public final class ExecutionExplorer {
 	}
 
 	public static Object[] getArguments(Method method) {
+		return getArguments(method, null);
+	}
+
+	public static Object[] getArguments(Method method, Class reciever) {
 		Parameter[] parameters = getParameters(method);
 		Class<?>[] parameterTypes = method.getParameterTypes();
 		Object[] values = new Object[parameterTypes.length];
 		for (int i = 0; i < parameterTypes.length; i++) {
-			Object parameter = parameters[i].value();
-			if (parameterTypes[i].isAssignableFrom(parameter.getClass())) {
-				values[i] = parameter;
-			} else if (parameterTypes[i].isArray()) {
-				values[i] = convertToArray(parameterTypes[i], parameters);
+			if (parameters[i].supplier() != Void.class) {
+				values[i] = initSupplier(parameters[i].supplier()).get(parameterTypes[i], reciever);
 			} else {
-				values[i] = convertTo(parameterTypes[i], parameter);
+				Object parameter = parameters[i].value();
+				if (parameterTypes[i].isAssignableFrom(parameter.getClass())) {
+					values[i] = parameter;
+				} else if (parameterTypes[i].isArray()) {
+					values[i] = convertToArray(parameterTypes[i], parameters);
+				} else {
+					values[i] = convertTo(parameterTypes[i], parameter);
+				}
 			}
 		}
 		return values;
+	}
+
+	private static ParameterSupplier initSupplier(Class<? extends ParameterSupplier> supplier) {
+		try {
+			return supplier.getConstructor().newInstance();
+		} catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	private static Parameter[] getParameters(Method method) {

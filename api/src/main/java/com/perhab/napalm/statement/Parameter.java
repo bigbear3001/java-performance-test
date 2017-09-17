@@ -22,4 +22,9 @@ public @interface Parameter {
 	 * Value that should be given to method invocation.
 	 */
 	String value() default EMPTY_STRING;
+
+	/**
+	 * Class that supplies the value for this parameter.
+	 */
+    Class supplier() default Void.class;
 }
