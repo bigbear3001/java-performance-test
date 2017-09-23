@@ -51,7 +51,7 @@ public class Result {
 	
 	@Override
 	public final String toString() {
-		return statement.toString() + "(" + statement.getArguments() + ")";
+		return statement.toString() + "(" + statement.getArguments() + "): " + result;
 	}
 
 	public void time() {

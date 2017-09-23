@@ -1,6 +1,6 @@
 package com.perhab.napalm.implementations.arrays.iterate;
 
-public class ForWithI implements ArrayIteration {
+public class ForWithI implements ArrayIterationUnevenLength {
 
 	@Override
 	public Integer sum(final Integer[] integers) {

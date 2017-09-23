@@ -5,7 +5,7 @@ import java.util.Arrays;
 /**
  * Created by bigbear3001 on 01.07.17.
  */
-public class Stream implements ArrayIteration {
+public class Stream implements ArrayIterationUnevenLength {
 
     @Override
     public Integer sum(final Integer[] integers) {

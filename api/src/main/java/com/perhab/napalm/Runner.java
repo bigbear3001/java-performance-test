@@ -6,10 +6,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import com.perhab.napalm.discover.Discover;
-import com.perhab.napalm.statement.BaseStatement;
-import com.perhab.napalm.statement.Execute;
-import com.perhab.napalm.statement.ExecuteParallel;
-import com.perhab.napalm.statement.ExecutionExplorer;
+import com.perhab.napalm.statement.*;
 import com.perhab.napalm.validation.ResultEqualsValidator;
 import com.perhab.napalm.validation.Validator;
 import com.perhab.napalm.validation.Validators;
@@ -121,9 +118,11 @@ public class Runner {
 	private Collection<StatementGroup> prepare(final Class<?>[] implementations) {
 		ArrayList<StatementGroup> statementGroups = new ArrayList<StatementGroup>(implementations.length);
 		for (Class<?> implementation : implementations) {
-			for (BaseStatement statement : BaseStatement.getBaseStatements(implementation)) {
-				if (!statementGroups.contains(statement.getGroup())) {
-					statementGroups.add(statement.getGroup());
+			if (implementation.getAnnotation(Ignore.class) == null) {
+				for (BaseStatement statement : BaseStatement.getBaseStatements(implementation)) {
+					if (!statementGroups.contains(statement.getGroup())) {
+						statementGroups.add(statement.getGroup());
+					}
 				}
 			}
 		}
