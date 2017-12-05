@@ -1,10 +1,9 @@
 package com.perhab.napalm;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.*;
 
+import com.google.common.collect.Lists;
 import com.perhab.napalm.discover.Discover;
 import com.perhab.napalm.statement.*;
 import com.perhab.napalm.validation.ResultEqualsValidator;
